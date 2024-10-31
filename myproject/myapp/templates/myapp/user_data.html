@@ -1,0 +1,279 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>User Data</title>
+</head>
+<body>
+    <h2>Your Data</h2>
+    <a href="{% url 'add_data' %}">Add Data</a>
+    <ul>
+        {% for item in data %}
+        <li>{{ item.name }} | <a href="{% url 'edit_data' item.pk %}">Edit</a> | <a href="{% url 'delete_data' item.pk %}">Delete</a></li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'logout' %}">Logout</a>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Data</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f4f8; /* Light background color */
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h2 {
+            color: #333; /* Dark text color for headings */
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            max-width: 800px; /* Limit the table width */
+            border-collapse: collapse;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            background: white; /* White background for the table */
+            border-radius: 10px;
+            overflow: hidden; /* Round corners */
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd; /* Light border for table rows */
+            min-width: 100px; /* Minimum width for columns */
+            max-width: 150px; /* Maximum width for columns */
+            overflow: hidden; /* Hide overflowed text */
+            white-space: nowrap; /* Prevent text wrapping */
+            text-overflow: ellipsis; /* Show ellipsis for overflowed text */
+        }
+
+        th {
+            background-color: #6a11cb; /* Header background color */
+            color: white; /* White text for header */
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1; /* Highlight on row hover */
+        }
+
+        a {
+            color: #6a11cb;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #2575fc; /* Link hover color */
+            text-decoration: underline;
+        }
+
+        .no-data {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #666; /* Grey text for no data message */
+        }
+
+        .action-links {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Space between action links */
+        }
+
+        .action-links a {
+            padding: 10px 20px;
+            background-color: #6a11cb; /* Button background color */
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .action-links a:hover {
+            background-color: #2575fc; /* Button hover color */
+        }
+
+        /* Modal Styling */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ff7e5f; /* Customize the button color */
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #feb47b; /* Customize hover color */
+        }
+    </style>
+</head>
+
+<body>
+    {% if data %}
+    <h2>Welcome back, {{ data.0.name }}!</h2> <!-- Displays the name of the first item in the data queryset -->
+     {% endif %}
+    
+
+    <!-- Check if there is any data for the user -->
+    {% if data %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Date of Joining</th>
+                    <th>Gender</th>
+                    <th>Weight (kg)</th>
+                    <th>Height (cm)</th>
+                    <th>Food Type</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.email }}</td>
+                        <td>{{ item.dob|date:'d-M-Y' }}</td>    
+                        <td>{{ item.gender }}</td>
+                        <td>{{ item.weight }}</td>
+                        <td>{{ item.height }}</td>
+                        <td>{{ item.food_type }}</td>
+                        <td>
+                            <a href="{% url 'edit_data' item.pk %}">Edit</a> | 
+                            <a href="#" onclick="showDeleteModal('{% url 'delete_data' item.pk %}')">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+    <p class="no-data">No data available. <a href="{% url 'add_data' %}">Add Data</a></p>
+    {% endif %}
+
+    <div class="action-links">
+        <a href="#" onclick="showLogoutModal()">Logout</a>
+    </div>
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content" style="width: 300px; padding: 20px; text-align: center;"> <!-- Adjust size -->
+        {% if data %}
+        <h2>Delete - Name ({{ data.0.name }})</h2> <!-- Display the specific item's name -->
+        {% endif %}
+        <p>Are you sure to delete?</p>
+        <button id="confirmDeleteButton">Yes</button>
+        <button onclick="closeDeleteModal()">No</button>
+    </div>
+</div>
+
+   <!-- Logout Confirmation Modal -->
+<div id="logoutModal" class="modal">
+    <div class="modal-content" style="width: 300px; padding: 20px; text-align: center;"> <!-- Adjust size -->
+        <h2>Are you sure you want to log out?</h2>
+        <button id="confirmLogoutButton" onclick="logoutUser()">Yes</button>
+        <button onclick="closeLogoutModal()">No</button>
+    </div>
+</div>
+
+
+    <!-- JavaScript for Modal Functionality -->
+    <script>
+        function showDeleteModal(deleteUrl) {
+            document.getElementById("confirmDeleteButton").onclick = function() {
+                window.location.href = deleteUrl; // Redirect to the delete URL
+            };
+            document.getElementById("deleteModal").style.display = "block"; // Show modal
+        }
+
+        function closeDeleteModal() {
+            document.getElementById("deleteModal").style.display = "none"; // Hide modal
+        }
+
+        function showLogoutModal() {
+            document.getElementById("logoutModal").style.display = "block"; // Show logout modal
+        }
+
+        function closeLogoutModal() {
+            document.getElementById("logoutModal").style.display = "none"; // Hide logout modal
+        }
+
+        function logoutUser() {
+            window.location.href = "{% url 'logout' %}"; // Redirect to logout URL
+        }
+
+        // Close modal when clicking outside of the modal
+        window.onclick = function(event) {
+            const deleteModal = document.getElementById("deleteModal");
+            const logoutModal = document.getElementById("logoutModal");
+            if (event.target === deleteModal) {
+                closeDeleteModal();
+            } else if (event.target === logoutModal) {
+                closeLogoutModal();
+            }
+
+
+            function showAlert(message) {
+    alert(message);
+}
+
+// Example usage after deleting
+function confirmDeletion() {
+    showAlert('Item deleted successfully.');
+}
+
+        };
+    </script>
+</body>
+
+</html>

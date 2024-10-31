@@ -1,0 +1,145 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Add/Edit Data</title>
+</head>
+<body>
+    <h2>Add/Edit Data</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label>Name:</label><input type="text" name="name" value="{{ data.name }}">
+        <label>Email:</label><input type="email" name="email" value="{{ data.email }}">
+        <label>DOB:</label><input type="date" name="dob" value="{{ data.dob }}">
+        <label>Gender:</label><input type="text" name="gender" value="{{ data.gender }}">
+        <label>Weight:</label><input type="number" name="weight" value="{{ data.weight }}">
+        <label>Height:</label><input type="number" name="height" value="{{ data.height }}">
+        <label>Food Type:</label><input type="text" name="food_type" value="{{ data.food_type }}">
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add/Edit Data</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light background */
+            font-family: 'Open Sans', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full height */
+            margin: 0;
+        }
+
+        h2 {
+            color: #343a40; /* Dark color for headings */
+            margin-bottom: 20px;
+            text-align: center; /* Center the heading */
+        }
+
+        form {
+            background: #ffffff; /* White background for the form */
+            padding: 20px; /* Reduced padding */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Reduced gap */
+            width: 100%;
+            max-width: 400px; /* Limit the form width */
+        }
+
+        label {
+            font-weight: 600; /* Bold labels */
+            color: #495057; /* Dark gray for labels */
+            margin-bottom: 5px; /* Space below labels */
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        input[type="number"] {
+            padding: 10px; /* Smaller padding */
+            border: 1px solid #ced4da; /* Light border */
+            border-radius: 4px; /* Slightly smaller corners */
+            width: 100%; /* Full width input */
+            box-sizing: border-box; /* Include padding in width calculation */
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="date"]:focus,
+        input[type="number"]:focus {
+            border-color: #007bff; /* Change border color on focus */
+            outline: none; /* Remove default outline */
+        }
+
+        button {
+            background-color: #007bff; /* Primary button color */
+            color: white; /* White text for the button */
+            padding: 10px; /* Smaller button padding */
+            border: none; /* Remove border */
+            border-radius: 4px; /* Rounded corners */
+            font-weight: 600; /* Bold button text */
+            cursor: pointer; /* Change cursor on hover */
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .cancel-link {
+            margin-top: 10px; /* Space above cancel link */
+            color: #007bff; /* Primary link color */
+            text-decoration: none;
+            transition: color 0.3s;
+            text-align: center; /* Center the cancel link */
+        }
+
+        .cancel-link:hover {
+            color: #0056b3; /* Change color on hover */
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <h2>Add/Edit Data</h2> <!-- Move the heading inside the form -->
+        
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" value="{{ data.name }}" required>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" value="{{ data.email }}" required>
+
+        <label for="dob">DOB:</label>
+        <input type="date" name="dob" id="dob" value="{{ data.dob }}" required>
+
+        <label for="gender">Gender:</label>
+        <input type="text" name="gender" id="gender" value="{{ data.gender }}" required>
+
+        <label for="weight">Weight (kg):</label>
+        <input type="number" name="weight" id="weight" value="{{ data.weight }}" required>
+
+        <label for="height">Height (cm):</label>
+        <input type="number" name="height" id="height" value="{{ data.height }}" required>
+
+        <label for="food_type">Food Type:</label>
+        <input type="text" name="food_type" id="food_type" value="{{ data.food_type }}" required>
+
+        <button type="submit">Save</button>
+        <a href="{% url 'user_data' %}" class="cancel-link">Cancel</a> <!-- Moved cancel link inside the form -->
+    </form>
+</body>
+
+</html>

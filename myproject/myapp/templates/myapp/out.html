@@ -1,0 +1,49 @@
+
+<script>
+    document.getElementById("login-form").onsubmit = function (e) {
+        e.preventDefault();
+        const username = document.querySelector("input[name='username']").value;
+        const password = document.querySelector("input[name='password']").value;
+
+        // Reset error messages
+        document.getElementById("username-error").textContent = "";
+        document.getElementById("password-error").textContent = "";
+        
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+if (username && !emailPattern.test(username)) {
+    document.getElementById("username-error").textContent = "Please enter a valid email address.";
+    return; // Stop the function here
+}
+         // Validate inputs
+if (!username && !password) {
+    document.getElementById("username-error").textContent = "Please enter an email address.";
+    document.getElementById("password-error").textContent = "Please enter a password.";
+    return; // Stop the function here
+// Optional: Validate email format
+} else if (!username) {
+    document.getElementById("username-error").textContent = "Please enter an email address.";
+} else if (!password) {
+    document.getElementById("password-error").textContent = "Please enter a password.";
+}
+
+        // Create FormData object and send the login request
+        const formData = new FormData(this);
+        fetch("{% url 'login' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                'X-CSRFToken': csrftoken
+            },
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = data.redirect_url;
+            } else {
+                document.getElementById("username-error").textContent = data.username_error || "";
+                document.getElementById("password-error").textContent = data.password_error || "";
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    };

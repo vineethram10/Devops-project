@@ -1,0 +1,159 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Add/Edit Data</title>
+</head>
+<body>
+    <h2>Add/Edit Data</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label>Name:</label><input type="text" name="name" value="{{ data.name }}">
+        <label>Email:</label><input type="email" name="email" value="{{ data.email }}">
+        <label>DOB:</label><input type="date" name="dob" value="{{ data.dob }}">
+        <label>Gender:</label><input type="text" name="gender" value="{{ data.gender }}">
+        <label>Weight:</label><input type="number" name="weight" value="{{ data.weight }}">
+        <label>Height:</label><input type="number" name="height" value="{{ data.height }}">
+        <label>Food Type:</label><input type="text" name="food_type" value="{{ data.food_type }}">
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add/Edit Data</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f4f8; /* Light background color */
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h2 {
+            color: #333; /* Dark text color for headings */
+            margin-bottom: 20px;
+        }
+
+        form {
+            background: white; /* White background for the form */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Space between form fields */
+            width: 100%;
+            max-width: 400px; /* Limit the form width */
+        }
+
+        label {
+            font-weight: bold;
+            color: #333; /* Dark color for labels */
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        input[type="number"] {
+            padding: 10px;
+            border: 1px solid #ddd; /* Light border */
+            border-radius: 5px; /* Rounded corners */
+            width: 100%; /* Full width input */
+            box-sizing: border-box; /* Include padding in width calculation */
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="date"]:focus,
+        input[type="number"]:focus {
+            border-color: #6a11cb; /* Change border color on focus */
+            outline: none; /* Remove default outline */
+        }
+
+        button {
+            background-color: #6a11cb; /* Button background color */
+            color: white; /* White text for the button */
+            padding: 10px;
+            border: none; /* Remove border */
+            border-radius: 5px; /* Rounded corners for the button */
+            font-weight: bold;
+            cursor: pointer; /* Change cursor on hover */
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2575fc; /* Button hover color */
+        }
+
+        .cancel-link {
+            margin-top: 10px; /* Space above cancel link */
+            color: #6a11cb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .cancel-link:hover {
+            color: #2575fc; /* Change color on hover */
+            text-decoration: underline;
+        }
+
+        /* Error message styling */
+        .error {
+            color: red; /* Red color for error messages */
+            font-size: 14px; /* Slightly smaller font for errors */
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Add/Edit Data</h2>
+    <form method="post">
+        {% csrf_token %}
+        
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" value="{{ data.name }}" required>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" value="{{ data.email }}" required>
+
+        <label for="dob">Date Of Joining:</label>
+        <input type="date" name="dob" id="dob" value="{{ formatted_dob }}" required>
+
+        <label for="gender">Gender:</label>
+        <input type="text" name="gender" id="gender" value="{{ data.gender }}" required>
+
+        <label for="weight">Weight (kg):</label>
+        <input type="number" name="weight" id="weight" value="{{ data.weight }}" required>
+
+        <label for="height">Height (cm):</label>
+        <input type="number" name="height" id="height" value="{{ data.height }}" required>
+
+        <label for="food_type">Food Type:</label>
+        <input type="text" name="food_type" id="food_type" value="{{ data.food_type }}" required>
+
+        <button type="submit">Save</button>
+    </form>
+    
+    {% if form.errors %}
+        <div class="error">
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    <li>{{ field }}: {{ errors|join:", " }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    
+    <a href="{% url 'user_data' %}" class="cancel-link">Cancel</a> <!-- Cancel link to navigate back -->
+</body>
+
+</html>
